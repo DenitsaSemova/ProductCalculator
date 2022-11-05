@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "j1GQHSKlw4fLhbLZZteBo9iass965Aor8dzMe9Rgo4welF7DZ9pNRpesR2ZRdy2OzwIsaUUaRnVj0w2o7lqxEg==",
+  "dgSpecHash": "Joa21i1uQQC9eHuP8bBca+W9Tum0m07eL/4IU/MkXP8SAxpqVEWpup8RN5SSm0HpfXLxSYeaa3WTPkz/zznE3A==",
   "success": true,
-  "projectFilePath": "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Deni\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }

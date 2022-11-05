@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -14,37 +16,61 @@ namespace ProductCalculator
         JarOfLutenitsa jarOfLutenitsa = new JarOfLutenitsa();
         JarOfKiopolu jarOfKiopolu = new JarOfKiopolu();
 
-        double totalCapacity = 200;
+        public double TotalCapacity { get; set; } = 200;
 
-        double currPeppersQuantity = 0;
-        double currTomatoesQuantity = 0;
-        double currCarrotsQuantity = 0;
-        double currSaltQuantity = 0;
-        double currSugarQuantity = 0;
-        double currEggplantQuantity = 0;
-        double currGarlicQuantity = 0;
-        double currOnionQuantity = 0;
+        public double CurrPeppersQuantity { get; set; }
+        public double CurrTomatoesQuantity { get; set; }
+        public double CurrCarrotsQuantity { get; set; }
+        public double CurrSaltQuantity { get; set; }
+        public double CurrSugarQuantity { get; set; }
+        public double CurrEggplantQuantity { get; set; }
+        public double CurrGarlicQuantity { get; set; }
+        public double CurrOnionQuantity { get; set; }
 
-        double peppersQuantity = 0;
-        double tomatoesQuantity = 0;
-        double carrotsQuantity = 0;
-        double eggplantQuantity = 0;
-        double garlicQuantity = 0;
-        double onionQuantity = 0;
-        double saltQuantity = 0;
-        double sugarQuantity = 0;
+        public double TotalPeppersQuantity { get; set; }
+        public double TotalTomatoesQuantity { get; set; }
+        public double TotalCarrotsQuantity { get; set; }
+        public double TotalSaltQuantity { get; set; }
+        public double TotalSugarQuantity { get; set; }
+        public double TotalEggplantQuantity { get; set; }
+        public double TotalGarlicQuantity { get; set; }
+        public double TotalOnionQuantity { get; set; }
 
-        double totalJarsOfLiutenitsa = 0;
-        double currJarsOfLiutenitsa = 0;
-        double totalJarsOfKiopolu = 0;
-        double currJarsOfKiopolu = 0;
-        double totalJars = 0;
+        public double TotalJarsOfLiutenitsa { get; set; }
+        public double CurrJarsOfLiutenitsa { get; set; }
+        public double TotalJarsOfKiopolu { get; set; }
+        public double CurrJarsOfKiopolu { get; set; }
+        public double TotalJarsLutenitsaAndKiopolu { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            LoadLastSession();
         }
 
+        private void LoadLastSession()
+        {
+            var exists = File.Exists(@"..\..\..\productsAndJars.json");
+
+            if (exists)
+            {
+                var lastSessionString = File.ReadAllText(@"..\..\..\productsAndJars.json");
+                var lastSession = JsonConvert.DeserializeObject<ProductsAndJars>(lastSessionString);
+
+                JarsOfLiutenitsa.Text = lastSession?.JarsOfLutenitsa.ToString();
+                JarsOfKiopolu.Text = lastSession?.JarsOfKiopolu.ToString();
+                TotalJars.Text = (lastSession?.JarsOfLutenitsa + lastSession?.JarsOfKiopolu).ToString();
+
+                PeppersQuantity.Text = lastSession?.Peppers.ToString();
+                TomatoesQuantity.Text = lastSession?.Tomatoes.ToString();
+                CarrotsQuantity.Text = lastSession?.Carrots.ToString();
+                SaltQuantity.Text = lastSession?.Salt.ToString();
+                SugarQuantity.Text = lastSession?.Suggar.ToString();
+                EggplantQuantity.Text = lastSession?.Eggplant.ToString();
+                GarlicQuantity.Text = lastSession?.Garlic.ToString();
+                OnionQuantity.Text = lastSession?.Onion.ToString();
+            }
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -56,43 +82,47 @@ namespace ProductCalculator
                 sugarTextBox.Text == String.Empty ||
                 eggplantTextBox.Text == String.Empty ||
                 garlicTextBox.Text == String.Empty ||
-                onionTextBox.Text == String.Empty)
+                onionTextBox.Text == String.Empty ||
+                peppersTextBox.Text == "∞" ||
+                tomatoesTextBox.Text == "∞" ||
+                carrotsTextBox.Text == "∞" ||
+                saltTextBox.Text == "∞" ||
+                sugarTextBox.Text == "∞" ||
+                eggplantTextBox.Text == "∞" ||
+                garlicTextBox.Text == "∞" ||
+                onionTextBox.Text == "∞")
             {
-                MessageBox.Show("Необходимо е да въведете количество за всеки продукт. " +
-                    "Ако нямате налично, моля въведете 0");
-
+                MessageBox.Show("Въведените данни са невалидни. Необходимо е да въведете количество " +
+                    "за всеки продукт. Ако нямате налично, моля въведете 0");
             }
             else
             {
                 try
                 {
-                    currPeppersQuantity = double.Parse(peppersTextBox.Text);
-                    currTomatoesQuantity = double.Parse(tomatoesTextBox.Text);
-                    currCarrotsQuantity = double.Parse(carrotsTextBox.Text);
-                    currSaltQuantity = double.Parse(saltTextBox.Text);
-                    currSugarQuantity = double.Parse(sugarTextBox.Text);
-                    currEggplantQuantity = double.Parse(eggplantTextBox.Text);
-                    currGarlicQuantity = double.Parse(garlicTextBox.Text);
-                    currOnionQuantity = double.Parse(onionTextBox.Text);
+                    CurrPeppersQuantity = double.Parse(peppersTextBox.Text);
+                    CurrTomatoesQuantity = double.Parse(tomatoesTextBox.Text);
+                    CurrCarrotsQuantity = double.Parse(carrotsTextBox.Text);
+                    CurrSaltQuantity = double.Parse(saltTextBox.Text);
+                    CurrSugarQuantity = double.Parse(sugarTextBox.Text);
+                    CurrEggplantQuantity = double.Parse(eggplantTextBox.Text);
+                    CurrGarlicQuantity = double.Parse(garlicTextBox.Text);
+                    CurrOnionQuantity = double.Parse(onionTextBox.Text);
 
-                    peppersQuantity += currPeppersQuantity;
-                    tomatoesQuantity += currTomatoesQuantity;
-                    carrotsQuantity += currCarrotsQuantity;
-                    saltQuantity += currSaltQuantity;
-                    sugarQuantity += currSugarQuantity;
-                    eggplantQuantity += currEggplantQuantity;
-                    garlicQuantity += currGarlicQuantity;
-                    onionQuantity += currOnionQuantity;
+                    TotalPeppersQuantity += CurrPeppersQuantity;
+                    TotalTomatoesQuantity += CurrTomatoesQuantity;
+                    TotalCarrotsQuantity += CurrCarrotsQuantity;
+                    TotalSaltQuantity += CurrSaltQuantity;
+                    TotalSugarQuantity += CurrSugarQuantity;
+                    TotalEggplantQuantity += CurrEggplantQuantity;
+                    TotalGarlicQuantity += CurrGarlicQuantity;
+                    TotalOnionQuantity += CurrOnionQuantity;
                 }
                 catch
                 {
-
-                    MessageBox.Show("Необходимо е да въведете количество за всеки продукт. " +
-                        "Ако нямате налично, моля въведете 0");
-
+                    MessageBox.Show("Въведените данни са невалидни. Необходимо е да въведете количество " +
+                    "за всеки продукт. Ако нямате налично, моля въведете 0");
                 }
             }
-
 
             peppersTextBox.Clear();
             tomatoesTextBox.Clear();
@@ -105,95 +135,108 @@ namespace ProductCalculator
 
 
             Dictionary<string, double> limitingFactorForLiutenitsa = LimitingFactorForLiutenitsa(jarOfLutenitsa.Peppers,
-                jarOfLutenitsa.Tomatoes, jarOfLutenitsa.Carrots, jarOfLutenitsa.Salt, jarOfLutenitsa.Suggar, peppersQuantity,
-                tomatoesQuantity, carrotsQuantity, saltQuantity, sugarQuantity);
+                jarOfLutenitsa.Tomatoes, jarOfLutenitsa.Carrots, jarOfLutenitsa.Salt, jarOfLutenitsa.Suggar, TotalPeppersQuantity,
+                TotalTomatoesQuantity, TotalCarrotsQuantity, TotalSaltQuantity, TotalSugarQuantity);
 
             Dictionary<string, double> limitingFactorForKiopolu = LimitingFactorForKiopolu(jarOfKiopolu.Peppers,
                 jarOfKiopolu.Tomatoes, jarOfKiopolu.Eggplant, jarOfKiopolu.Salt, jarOfKiopolu.Onion, jarOfKiopolu.Garlic,
-                peppersQuantity, tomatoesQuantity, eggplantQuantity, garlicQuantity, onionQuantity, saltQuantity);
+                TotalPeppersQuantity, TotalTomatoesQuantity, TotalEggplantQuantity, TotalGarlicQuantity, TotalOnionQuantity, TotalSaltQuantity);
 
             Dictionary<string, double> commonLimitingFactor = CommonLimitingFactor(jarOfLutenitsa.Peppers,
                 jarOfLutenitsa.Tomatoes, jarOfLutenitsa.Carrots, jarOfLutenitsa.Salt, jarOfLutenitsa.Suggar,
                 jarOfKiopolu.Peppers, jarOfKiopolu.Tomatoes, jarOfKiopolu.Eggplant, jarOfKiopolu.Salt, jarOfKiopolu.Onion,
-                jarOfKiopolu.Garlic, peppersQuantity, tomatoesQuantity, carrotsQuantity, eggplantQuantity, garlicQuantity,
-                onionQuantity, saltQuantity, sugarQuantity);
+                jarOfKiopolu.Garlic, TotalPeppersQuantity, TotalTomatoesQuantity, TotalCarrotsQuantity, TotalEggplantQuantity, TotalGarlicQuantity,
+                TotalOnionQuantity, TotalSaltQuantity, TotalSugarQuantity);
 
 
             double minJarsOfLiutenitsa = Math.Floor(limitingFactorForLiutenitsa.Values.Min());
             double minJarsOfKiopolu = Math.Floor(limitingFactorForKiopolu.Values.Min());
 
-
             double[] getNumberOfJars = GetNumberOfJars(jarOfLutenitsa.Peppers, jarOfLutenitsa.Tomatoes,
                 jarOfLutenitsa.Salt, jarOfKiopolu.Peppers, jarOfKiopolu.Tomatoes, jarOfKiopolu.Salt,
-                peppersQuantity, tomatoesQuantity, saltQuantity, totalJarsOfLiutenitsa, currJarsOfLiutenitsa,
-                totalJarsOfKiopolu, currJarsOfKiopolu, totalJars, commonLimitingFactor,
+                TotalPeppersQuantity, TotalTomatoesQuantity, TotalSaltQuantity, TotalJarsOfLiutenitsa, CurrJarsOfLiutenitsa,
+                TotalJarsOfKiopolu, CurrJarsOfKiopolu, TotalJarsLutenitsaAndKiopolu, commonLimitingFactor,
                 minJarsOfLiutenitsa, minJarsOfKiopolu);
 
-            currJarsOfLiutenitsa = getNumberOfJars[0];
-            totalJarsOfLiutenitsa = getNumberOfJars[1];
-            currJarsOfKiopolu = getNumberOfJars[2];
-            totalJarsOfKiopolu = getNumberOfJars[3];
-            totalJars = getNumberOfJars[4];
+            CurrJarsOfLiutenitsa = getNumberOfJars[0];
+            TotalJarsOfLiutenitsa = getNumberOfJars[1];
+            CurrJarsOfKiopolu = getNumberOfJars[2];
+            TotalJarsOfKiopolu = getNumberOfJars[3];
+            TotalJarsLutenitsaAndKiopolu = getNumberOfJars[4];
 
-            if (currJarsOfLiutenitsa == 0 && currJarsOfKiopolu == 0 )
+            if (CurrJarsOfLiutenitsa == 0 && CurrJarsOfKiopolu == 0)
             {
                 MessageBox.Show($"Въведените количества от продуктите са недостатъчни. Следващите количества," +
                     $" които добавите ще бъдат прибавени към настоящите.");
             }
 
-            if (totalJars > totalCapacity)
+            if (TotalJarsLutenitsaAndKiopolu > TotalCapacity)
             {
-                double overCapacity = totalJars - totalCapacity; 
+                double overCapacity = TotalJarsLutenitsaAndKiopolu - TotalCapacity;
 
-                peppersQuantity -= currPeppersQuantity; 
-                tomatoesQuantity -= currTomatoesQuantity;
-                carrotsQuantity -= currCarrotsQuantity;
-                saltQuantity -= currSaltQuantity;
-                sugarQuantity -= currSugarQuantity;
-                eggplantQuantity -= currEggplantQuantity;
-                garlicQuantity -= currGarlicQuantity;
-                onionQuantity -= currOnionQuantity;
+                TotalPeppersQuantity -= CurrPeppersQuantity;
+                TotalTomatoesQuantity -= CurrTomatoesQuantity;
+                TotalCarrotsQuantity -= CurrCarrotsQuantity;
+                TotalSaltQuantity -= CurrSaltQuantity;
+                TotalSugarQuantity -= CurrSugarQuantity;
+                TotalEggplantQuantity -= CurrEggplantQuantity;
+                TotalGarlicQuantity -= CurrGarlicQuantity;
+                TotalOnionQuantity -= CurrOnionQuantity;
 
-                totalJarsOfLiutenitsa -= currJarsOfLiutenitsa;
-                currJarsOfLiutenitsa = 0;
-                totalJarsOfKiopolu -= currJarsOfKiopolu;
-                currJarsOfKiopolu = 0;
-                totalJars = totalJarsOfLiutenitsa + totalJarsOfKiopolu;
+                TotalJarsOfLiutenitsa -= CurrJarsOfLiutenitsa;
+                CurrJarsOfLiutenitsa = 0;
+                TotalJarsOfKiopolu -= CurrJarsOfKiopolu;
+                CurrJarsOfKiopolu = 0;
+                TotalJarsLutenitsaAndKiopolu = TotalJarsOfLiutenitsa + TotalJarsOfKiopolu;
 
-                                
-                MessageBox.Show($"Максималният капацитет на мазето е {totalCapacity} бр. буркани по 800 гр. " +
+                MessageBox.Show($"Максималният капацитет на мазето е {TotalCapacity} бр. буркани по 800 гр. " +
                     $"Надминавате капацитета с {overCapacity} бр. Моля въведете по-малки количества.");
-
             }
             else
             {
-                peppersQuantity -= (currJarsOfLiutenitsa * jarOfLutenitsa.Peppers) + 
-                    (currJarsOfKiopolu * jarOfKiopolu.Peppers); 
-                tomatoesQuantity -= (currJarsOfLiutenitsa * jarOfLutenitsa.Tomatoes) + 
-                    (currJarsOfKiopolu * jarOfKiopolu.Tomatoes);
-                carrotsQuantity -= currJarsOfLiutenitsa * jarOfLutenitsa.Carrots;
-                saltQuantity -= (currJarsOfLiutenitsa * jarOfLutenitsa.Salt) + (currJarsOfKiopolu * jarOfKiopolu.Salt);
-                sugarQuantity -= currJarsOfLiutenitsa * jarOfLutenitsa.Suggar;
-                eggplantQuantity -= currJarsOfKiopolu * jarOfKiopolu.Eggplant;
-                garlicQuantity -= currJarsOfKiopolu * jarOfKiopolu.Garlic;
-                onionQuantity -= currJarsOfKiopolu * jarOfKiopolu.Onion;
+                TotalPeppersQuantity -= (CurrJarsOfLiutenitsa * jarOfLutenitsa.Peppers) +
+                    (CurrJarsOfKiopolu * jarOfKiopolu.Peppers);
+                TotalTomatoesQuantity -= (CurrJarsOfLiutenitsa * jarOfLutenitsa.Tomatoes) +
+                    (CurrJarsOfKiopolu * jarOfKiopolu.Tomatoes);
+                TotalCarrotsQuantity -= CurrJarsOfLiutenitsa * jarOfLutenitsa.Carrots;
+                TotalSaltQuantity -= (CurrJarsOfLiutenitsa * jarOfLutenitsa.Salt) + (CurrJarsOfKiopolu * jarOfKiopolu.Salt);
+                TotalSugarQuantity -= CurrJarsOfLiutenitsa * jarOfLutenitsa.Suggar;
+                TotalEggplantQuantity -= CurrJarsOfKiopolu * jarOfKiopolu.Eggplant;
+                TotalGarlicQuantity -= CurrJarsOfKiopolu * jarOfKiopolu.Garlic;
+                TotalOnionQuantity -= CurrJarsOfKiopolu * jarOfKiopolu.Onion;
 
-                JarsOfLiutenitsa.Text = totalJarsOfLiutenitsa.ToString();
-                JarsOfKiopolu.Text = totalJarsOfKiopolu.ToString();
-                TotalJars.Text = totalJars.ToString();
+                JarsOfLiutenitsa.Text = TotalJarsOfLiutenitsa.ToString();
+                JarsOfKiopolu.Text = TotalJarsOfKiopolu.ToString();
+                TotalJars.Text = TotalJarsLutenitsaAndKiopolu.ToString();
 
-                PeppersQuantity.Text = peppersQuantity.ToString();
-                TomatoesQuantity.Text = tomatoesQuantity.ToString();
-                CarrotsQuantity.Text = carrotsQuantity.ToString();
-                SaltQuantity.Text = saltQuantity.ToString();
-                SugarQuantity.Text = sugarQuantity.ToString();
-                EggplantQuantity.Text = eggplantQuantity.ToString();
-                GarlicQuantity.Text = garlicQuantity.ToString();
-                OnionQuantity.Text = onionQuantity.ToString();
+                PeppersQuantity.Text = TotalPeppersQuantity.ToString();
+                TomatoesQuantity.Text = TotalTomatoesQuantity.ToString();
+                CarrotsQuantity.Text = TotalCarrotsQuantity.ToString();
+                SaltQuantity.Text = TotalSaltQuantity.ToString();
+                SugarQuantity.Text = TotalSugarQuantity.ToString();
+                EggplantQuantity.Text = TotalEggplantQuantity.ToString();
+                GarlicQuantity.Text = TotalGarlicQuantity.ToString();
+                OnionQuantity.Text = TotalOnionQuantity.ToString();
             }
 
-        }
+            var productsAndJars = new ProductsAndJars()
+            {
+                Peppers = TotalPeppersQuantity,
+                Tomatoes = TotalTomatoesQuantity,
+                Carrots = TotalCarrotsQuantity,
+                Salt = TotalSaltQuantity,
+                Suggar = TotalSugarQuantity,
+                Eggplant = TotalEggplantQuantity,
+                Garlic = TotalGarlicQuantity,
+                Onion = TotalOnionQuantity,
+                JarsOfLutenitsa = TotalJarsOfLiutenitsa,
+                JarsOfKiopolu = TotalJarsOfKiopolu,
+            };
 
+            var productsAndJarsString = JsonConvert.SerializeObject(productsAndJars, Formatting.Indented);
+
+            File.WriteAllText(@"..\..\..\productsAndJars.json", productsAndJarsString);
+        }
 
         public static double[] GetNumberOfJars(double pepersForLiutenitsa, double tomatoesForLiutenitsa,
             double saltForLiutenitsa, double pepersForKiopolu, double tomatoesForKiopolu, double saltForKiopolu,
@@ -204,7 +247,6 @@ namespace ProductCalculator
             double usedQuantity = 0;
             double remainingQuantity = 0;
 
-
             if (commonLimitingFactor.ContainsKey("jarsFromPeppers"))
             {
                 usedQuantity = Math.Floor(pepersForKiopolu * minJarsOfKiopolu);
@@ -214,7 +256,6 @@ namespace ProductCalculator
                 currJarsOfKiopolu = minJarsOfKiopolu;
                 totalJarsOfKiopolu += currJarsOfKiopolu;
                 totalJars += Math.Floor(currJarsOfLiutenitsa + currJarsOfKiopolu);
-
             }
             else if (commonLimitingFactor.ContainsKey("jarsFromTomatoes"))
             {
@@ -238,22 +279,18 @@ namespace ProductCalculator
             }
             else
             {
-
                 currJarsOfLiutenitsa = Math.Floor(minJarsOfLiutenitsa);
                 totalJarsOfLiutenitsa += currJarsOfLiutenitsa;
                 currJarsOfKiopolu = Math.Floor(minJarsOfKiopolu);
                 totalJarsOfKiopolu += currJarsOfKiopolu;
                 totalJars += Math.Floor(currJarsOfLiutenitsa + currJarsOfKiopolu);
-
             }
 
-            double[] numberOfJars = new double[] { currJarsOfLiutenitsa, totalJarsOfLiutenitsa, 
+            double[] numberOfJars = new double[] { currJarsOfLiutenitsa, totalJarsOfLiutenitsa,
                 currJarsOfKiopolu, totalJarsOfKiopolu, totalJars };
 
             return numberOfJars;
         }
-
-
 
         public static Dictionary<string, double> CommonLimitingFactor(double pepersForLiutenitsa,
             double tomatoesForLiutenitsa, double carrotsForLiutenitsa, double saltForLiutenitsa,
@@ -282,14 +319,13 @@ namespace ProductCalculator
             minJarCount.Add("jarsFromGarlic", jarsFromGarlic);
             minJarCount.Add("jarsFromOnion", jarsFromOnion);
 
-            string minCountProduct = minJarCount.Reverse().Aggregate((l, r) => l.Value < r.Value ? l : r).Key; 
+            string minCountProduct = minJarCount.Reverse().Aggregate((l, r) => l.Value < r.Value ? l : r).Key;
             double minCount = minJarCount.Values.Min();
 
             Dictionary<string, double> minProduct = new Dictionary<string, double>();
             minProduct.Add(minCountProduct, minCount);
 
             return minProduct;
-
         }
 
         public static Dictionary<string, double> LimitingFactorForKiopolu(double pepersForKiopolu,
@@ -350,7 +386,6 @@ namespace ProductCalculator
 
             return minProduct;
         }
-                
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -358,5 +393,40 @@ namespace ProductCalculator
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private void Button_Delete(object sender, RoutedEventArgs e)
+        {
+            var exists = File.Exists(@"..\..\..\productsAndJars.json");
+
+            if (exists)
+            {
+                File.Delete(@"..\..\..\productsAndJars.json");
+
+                JarsOfLiutenitsa.Text = "";
+                JarsOfKiopolu.Text = "";
+                TotalJars.Text = "";
+
+                PeppersQuantity.Text = "";
+                TomatoesQuantity.Text = "";
+                CarrotsQuantity.Text = "";
+                SaltQuantity.Text = "";
+                SugarQuantity.Text = "";
+                EggplantQuantity.Text = "";
+                GarlicQuantity.Text = "";
+                OnionQuantity.Text = "";
+
+                TotalPeppersQuantity = 0;
+                TotalTomatoesQuantity = 0;
+                TotalCarrotsQuantity = 0;
+                TotalSaltQuantity = 0;
+                TotalSugarQuantity = 0;
+                TotalEggplantQuantity = 0;
+                TotalGarlicQuantity = 0;
+                TotalOnionQuantity = 0;
+
+                TotalJarsOfLiutenitsa = 0;
+                TotalJarsOfKiopolu = 0;
+                TotalJarsLutenitsaAndKiopolu = 0;
+            }
+        }
     }
 }

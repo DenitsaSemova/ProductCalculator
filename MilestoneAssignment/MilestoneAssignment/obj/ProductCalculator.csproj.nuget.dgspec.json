@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj": {}
+    "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj": {}
   },
   "projects": {
-    "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj": {
+    "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
+        "projectUniqueName": "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
         "projectName": "ProductCalculator",
-        "projectPath": "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
+        "projectPath": "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\ProductCalculator.csproj",
         "packagesPath": "C:\\Users\\Deni\\.nuget\\packages\\",
-        "outputPath": "D:\\Denitsa\\Programming\\Milestone Assignment\\MilestoneAssignment\\MilestoneAssignment\\obj\\",
+        "outputPath": "D:\\Denitsa\\Programming\\Milestone Assignment\\ProductCalculator\\MilestoneAssignment\\MilestoneAssignment\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,6 +43,12 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

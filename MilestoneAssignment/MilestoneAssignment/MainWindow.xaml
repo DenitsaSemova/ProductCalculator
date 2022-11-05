@@ -359,7 +359,7 @@
             Width="59" Height="31" 
             TextAlignment="Center" 
             Background="#FF9CB7E9"/>
-            
+
             <TextBlock 
             x:Name="PeppersQuantity"  
             HorizontalAlignment="Left" 
@@ -369,7 +369,7 @@
             TextAlignment="Center" 
             Background="#FF9CB7E9"/>
             <!--VerticalAlignment="Center"-->
-                
+
             <TextBlock 
             
             x:Name="TomatoesQuantity"  
@@ -462,6 +462,20 @@
                 </Label.RenderTransform>
             </Label>
             <Label Content="Захар" HorizontalAlignment="Left" Margin="298,190,0,0" VerticalAlignment="Top" Width="79" FontWeight="Bold" FontSize="11" HorizontalContentAlignment="Right"/>
+            <Button 
+                Style="{DynamicResource RoundedB}" 
+                Content="Изчисти" 
+                Foreground="White" 
+                FontWeight="Bold" 
+                BorderBrush="CornflowerBlue" 
+                HorizontalAlignment="Left" 
+                Margin="594,345,0,0" 
+                VerticalAlignment="Top" 
+                Click="Button_Delete" 
+                Height="27" 
+                Width="82" 
+                Background="#FF9CB7E9"
+            />
 
         </Grid>
     </Border>
