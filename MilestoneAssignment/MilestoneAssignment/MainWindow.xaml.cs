@@ -414,6 +414,10 @@ namespace ProductCalculator
                 GarlicQuantity.Text = "";
                 OnionQuantity.Text = "";
 
+                TotalJarsOfLiutenitsa = 0;
+                TotalJarsOfKiopolu = 0;
+                TotalJarsLutenitsaAndKiopolu = 0;
+
                 TotalPeppersQuantity = 0;
                 TotalTomatoesQuantity = 0;
                 TotalCarrotsQuantity = 0;
@@ -422,10 +426,6 @@ namespace ProductCalculator
                 TotalEggplantQuantity = 0;
                 TotalGarlicQuantity = 0;
                 TotalOnionQuantity = 0;
-
-                TotalJarsOfLiutenitsa = 0;
-                TotalJarsOfKiopolu = 0;
-                TotalJarsLutenitsaAndKiopolu = 0;
             }
         }
     }
