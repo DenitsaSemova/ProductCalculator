@@ -94,6 +94,7 @@ namespace ProductCalculator
             {
                 MessageBox.Show("Въведените данни са невалидни. Необходимо е да въведете количество " +
                     "за всеки продукт. Ако нямате налично, моля въведете 0");
+                return;
             }
             else
             {
@@ -167,7 +168,7 @@ namespace ProductCalculator
             if (CurrJarsOfLiutenitsa == 0 && CurrJarsOfKiopolu == 0)
             {
                 MessageBox.Show($"Въведените количества от продуктите са недостатъчни. Следващите количества," +
-                    $" които добавите ще бъдат прибавени към настоящите.");
+                    $" които добавите ще бъдат прибавени към настоящите.");               
             }
 
             if (TotalJarsLutenitsaAndKiopolu > TotalCapacity)
